@@ -1,10 +1,7 @@
-GET http://0.0.0.0:8081/ping
- 
-###
-
-POST https://chat.googleapis.com/v1/spaces/AAAA_P6pynw/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=B253XfkDLxNiPZu03_rbmKmqpIlBWJOpFxYTZbADbhA%3D
+POST http://0.0.0.0:8084/recognize
 Content-Type: application/json
 
 {
-  "text":"Hello Ricardo"
-}
+  "person":"Chistian",
+  "reason":"For being a great role model"
+} 

@@ -3,15 +3,17 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func message(text string, url string){
-	text := fmt.Sprintf(`{"text":"%s"}`, text)
-	var jsonStr = []byte(`{"text":"Hello World."}`)
-	url := ""
+	text = fmt.Sprintf(`{"text":"%s"}`, text)
+	var jsonStr = []byte(text)
 	
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	if err != nil {
@@ -31,15 +33,27 @@ func message(text string, url string){
 }
 
 func main()  {
+	err := godotenv.Load()
+  if err != nil {
+		log.Fatalf("err loading: %v", err)
+	}
+	url := os.Getenv("GCHAT_WH")
+	port := os.Getenv("GCHAT_PORT")
 
 	r := gin.Default()
 
-	r.GET("/ping", func(c *gin.Context) {
+	type RecognitionRequestBody struct {
+		Person string `json:"person"`
+		Reason string `json:"reason"`
+	}
 
-    c.JSON(http.StatusOK, gin.H{
-      "message": "bingbong",
-    })
+	r.POST("/recognize", func(c *gin.Context) {
+		var body RecognitionRequestBody
+		if err := c.BindJSON(&body); err != nil {
+				fmt.Println(err)
+		}
+		message(fmt.Sprintf(`Recognition to %s! %s`, body.Person, body.Reason),url)
   })
 
-	r.Run(":8081") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	r.Run(fmt.Sprintf(":%s",port))
 }
