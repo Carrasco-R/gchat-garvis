@@ -1,0 +1,12 @@
+services:
+  garvis:
+    image: golang:1.20.1-alpine
+    working_dir: /app
+    volumes:
+      - ${PWD}/src:/app
+    expose:
+      - ${GCHAT_PORT}
+    command: go run main.go
+    environment:
+      - GCHAT_PORT=${GCHAT_PORT}
+      - GCHAT_WH=${GCHAT_WH}
