@@ -1,7 +1,0 @@
-POST http://0.0.0.0:8084/recognize
-Content-Type: application/json
-
-{
-  "person":"Chistian",
-  "reason":"For being a great role model"
-} 
